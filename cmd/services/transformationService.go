@@ -3,16 +3,16 @@ package services
 import (
 	"time"
 
-	"github.com/poooloooq/ingestion-pipeline/cmd/internal/fetch"
+	"github.com/poooloooq/ingestion-pipeline/cmd/services/fetchService"
 )
 
 type EnrichedPost struct {
-	fetch.Post
+	fetchService.Post
 	IngestedAt time.Time `json:"ingested_at"`
 	Source     string    `json:"source"`
 }
 
-func EnrichPosts(posts []fetch.Post, source string) []EnrichedPost {
+func EnrichPosts(posts []fetchService.Post, source string) []EnrichedPost {
 	var enriched []EnrichedPost
 	for _, p := range posts {
 		enriched = append(enriched, EnrichedPost{
