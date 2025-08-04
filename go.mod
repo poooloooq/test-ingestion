@@ -1,10 +1,19 @@
 module github.com/poooloooq/test-ingestion
 
-go 1.24.5
+go 1.21
 
-require cloud.google.com/go/firestore v1.18.0
+require (
+	cloud.google.com/go/firestore v1.18.0
+	github.com/stretchr/testify v1.9.0
+)
 
-require google.golang.org/api v0.214.0 // indirect
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/objx v0.5.2 // indirect
+	google.golang.org/api v0.214.0
+	gopkg.in/yaml.v3 v3.0.1 // indirect
+)
 
 require (
 	cloud.google.com/go v0.117.0 // indirect

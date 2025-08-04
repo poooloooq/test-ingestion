@@ -1,7 +1,5 @@
-version: '3.8'
-
 services:
-  ingestion-service:
+  test-ingestion-service:
     build: .
     container_name: test-ingestion-service
     ports:
