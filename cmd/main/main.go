@@ -7,18 +7,18 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/joho/godotenv"
-
+	"github.com/poooloooq/test-ingestion/cmd/config"
 	"github.com/poooloooq/test-ingestion/cmd/repository"
 	"github.com/poooloooq/test-ingestion/cmd/services"
 )
 
 func main() {
 
-	// Load environment variables from .env file if present
-	_ = godotenv.Load()
-	port := os.Getenv("PORT")
+	projectID := os.Getenv("GOOGLE_CLOUD_PROJECT")
+	// Load environment variables from .env file or Secrets Manager
+	config.Load(projectID)
 
+	port := os.Getenv("PORT")
 	http.HandleFunc("/posts", handleIngestion)
 	http.HandleFunc("/posts/get", repository.GetPostsHandler)
 

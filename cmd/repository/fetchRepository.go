@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"os"
 
 	"cloud.google.com/go/firestore"
+	"github.com/poooloooq/test-ingestion/cmd/config"
 	"github.com/poooloooq/test-ingestion/cmd/services"
 	"google.golang.org/api/iterator"
 )
@@ -15,7 +15,7 @@ import (
 func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 	//Load db config from env variables
-	projectID := os.Getenv("GOOGLE_CLOUD_PROJECT")
+	projectID := config.Config.GCProject
 	ctx := context.Background()
 
 	//Load firestore client

@@ -4,15 +4,15 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 
 	"cloud.google.com/go/firestore"
+	"github.com/poooloooq/test-ingestion/cmd/config"
 )
 
 func Insert(context context.Context, posts []UpdatedPost) error {
 
 	//Load db config from env variables
-	projectID := os.Getenv("GOOGLE_CLOUD_PROJECT")
+	projectID := config.Config.GCProject
 
 	//Load firestore client
 	//Needs creds.json for local runs
