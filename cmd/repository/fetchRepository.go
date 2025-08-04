@@ -21,6 +21,7 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 	//Load firestore client
 	//Needs creds.json for local runs
 	client, err := firestore.NewClient(ctx, projectID)
+
 	if err != nil {
 		log.Printf("client Failure: %v", err)
 		return
