@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  ingestion-service:
+    build: .
+    container_name: test-ingestion-service
+    ports:
+      - "8080:8080"
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/creds.json
+    volumes:
+      - ./creds.json:/app/creds.json
