@@ -1,0 +1,55 @@
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"log"
+	"net/http"
+	"os"
+
+	"github.com/joho/godotenv"
+
+	"github.com/poooloooq/test-ingestion/cmd/repository"
+	"github.com/poooloooq/test-ingestion/cmd/services"
+)
+
+func main() {
+
+	// Load environment variables from .env file if present
+	_ = godotenv.Load()
+	port := os.Getenv("PORT")
+
+	http.HandleFunc("/posts", handleIngestion)
+	http.HandleFunc("/posts/get", repository.GetPostsHandler)
+
+	log.Printf("Server started on port:%s", port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
+
+}
+
+func handleIngestion(w http.ResponseWriter, r *http.Request) {
+
+	url := os.Getenv("API_URL")
+	source := os.Getenv("SOURCE")
+
+	posts, err := services.GetAllPosts(url)
+	if err != nil {
+		log.Printf("Fetch Service error: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	updated := services.ModifyPosts(posts, source)
+
+	ctx := context.Background()
+	if err := services.Insert(ctx, updated); err != nil {
+		log.Printf("Storage Service error: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	log.Println("Ingestion completed.")
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(posts)
+}

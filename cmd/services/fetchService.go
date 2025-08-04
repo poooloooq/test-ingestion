@@ -16,7 +16,7 @@ type Post struct {
 	Body   string `json:"body"`
 }
 
-func getAllPosts(url string) ([]Post, error) {
+func GetAllPosts(url string) ([]Post, error) {
 
 	//Set Timeout from config
 	timeout, err := time.ParseDuration(os.Getenv("HTTP_TIMEOUT"))
@@ -30,19 +30,20 @@ func getAllPosts(url string) ([]Post, error) {
 
 	//Error Handling
 	if err != nil {
-		return nil, fmt.Errorf("Error while fetching: %w", err)
+		return nil, fmt.Errorf("error while fetching: %w", err)
 	}
 	defer resp.Body.Close()
 
 	//Response with unusual status
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("Unexpected Status: %s", resp.Status)
+		return nil, fmt.Errorf("unexpected status: %s", resp.Status)
 	}
 
+	//Read from response and parse JSON to slice of posts
 	body, _ := io.ReadAll(resp.Body)
 	posts := &[]Post{}
 	if err := json.Unmarshal(body, &posts); err != nil {
-		return nil, fmt.Errorf("RUnable to parse the response: %w", err)
+		return nil, fmt.Errorf("unable to parse the response: %w", err)
 	}
 	return *posts, nil
 }
