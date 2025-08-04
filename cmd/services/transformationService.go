@@ -2,24 +2,28 @@ package services
 
 import (
 	"time"
-
-	"github.com/poooloooq/ingestion-pipeline/cmd/services/fetchService"
 )
 
-type EnrichedPost struct {
-	fetchService.Post
+type UpdatedPost struct {
+	Post
 	IngestedAt time.Time `json:"ingested_at"`
 	Source     string    `json:"source"`
 }
 
-func EnrichPosts(posts []fetchService.Post, source string) []EnrichedPost {
-	var enriched []EnrichedPost
+func ModifyPosts(posts []Post, source string) []UpdatedPost {
+
+	var UpdatedPosts []UpdatedPost
+
+	//Cycle through slice of posts
 	for _, p := range posts {
-		enriched = append(enriched, EnrichedPost{
+
+		//add new UpdatedPost struc to UpdatedPosts Slice for each Post struc
+		UpdatedPosts = append(UpdatedPosts, UpdatedPost{
 			Post:       p,
 			IngestedAt: time.Now().UTC(),
 			Source:     source,
 		})
 	}
-	return enriched
+
+	return UpdatedPosts
 }
