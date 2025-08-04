@@ -1,0 +1,36 @@
+# Ignore credentials file
+creds.json
+
+# Ignore environment variable files
+.env
+.env.local
+.env.*.local
+
+# Ignore build output
+/bin/
+/obj/
+/out/
+/dist/
+
+# Ignore Go vendor directory
+/vendor/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore editor files
+*.swp
+*.swo
+*.idea/
+.vscode/
+*.iml
+
+# Ignore Go build cache and logs
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
