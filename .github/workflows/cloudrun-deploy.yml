@@ -32,6 +32,7 @@ jobs:
           region: ${{ secrets.REGION }}
           source: .
           project_id: ${{ secrets.PROJECT_ID }}
+          flags: '--service-account=${{ secrets.SERVICE_ACCOUNT }}'
       
       - name: Allow unauthenticated access
         run: |
