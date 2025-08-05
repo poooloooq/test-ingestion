@@ -42,11 +42,11 @@ func Load(projectID string) error {
 	// Otherwise load secrets from Secret Manager
 	apiURL, err := AccessSecret(ctx, projectID, "API_URL")
 	if err != nil {
-		return err
+		apiURL = ""
 	}
 	source, err := AccessSecret(ctx, projectID, "SOURCE")
 	if err != nil {
-		return err
+		source = ""
 	}
 	port, err := AccessSecret(ctx, projectID, "PORT")
 	if err != nil {

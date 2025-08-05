@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"time"
+
+	"github.com/poooloooq/test-ingestion/cmd/config"
 )
 
 type Post struct {
@@ -19,7 +20,7 @@ type Post struct {
 func GetAllPosts(url string) ([]Post, error) {
 
 	//Set Timeout from config
-	timeout, err := time.ParseDuration(os.Getenv("HTTP_TIMEOUT"))
+	timeout, err := time.ParseDuration(config.Config.HTTPTimeout)
 	if err != nil || timeout == 0 {
 		timeout = 10 * time.Second
 	}

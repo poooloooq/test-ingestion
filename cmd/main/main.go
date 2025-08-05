@@ -18,7 +18,7 @@ func main() {
 	// Load environment variables from .env file or Secrets Manager
 	config.Load(projectID)
 
-	port := os.Getenv("PORT")
+	port := config.Config.Port
 	http.HandleFunc("/posts", handleIngestion)
 	http.HandleFunc("/posts/get", repository.GetPostsHandler)
 
@@ -29,8 +29,8 @@ func main() {
 
 func handleIngestion(w http.ResponseWriter, r *http.Request) {
 
-	url := os.Getenv("API_URL")
-	source := os.Getenv("SOURCE")
+	url := config.Config.APIURL
+	source := config.Config.Source
 
 	posts, err := services.GetAllPosts(url)
 	if err != nil {
