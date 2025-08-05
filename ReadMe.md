@@ -124,3 +124,4 @@ Bonus-
                 - The ingestion method returns all the ingested records, that can be stored in a json file and updated in some s3 bucket which gets replaced with each new ingestion.
 
     4. Added integration tests to the deployment yaml file. It calls the /posts to ingest data and then calls /posts/get to see if data is ingested to firestore.
+    5. Bonus Feature- Integration with secrets manager for config
