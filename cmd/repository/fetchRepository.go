@@ -8,7 +8,7 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/poooloooq/test-ingestion/cmd/config"
-	"github.com/poooloooq/test-ingestion/cmd/services"
+	"github.com/poooloooq/test-ingestion/cmd/services/transform"
 	"google.golang.org/api/iterator"
 )
 
@@ -30,7 +30,7 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 	iter := client.Collection("posts").Documents(ctx)
 
-	var posts []services.UpdatedPost
+	var posts []transform.UpdatedPost
 	for {
 		doc, err := iter.Next()
 		if err == iterator.Done {
@@ -42,7 +42,7 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		var post services.UpdatedPost
+		var post transform.UpdatedPost
 		if err := doc.DataTo(&post); err != nil {
 			log.Printf("Failed to decode document: %v", err)
 			http.Error(w, "Failed to decode data", http.StatusInternalServerError)

@@ -43,3 +43,50 @@ jobs:
             --member="allUsers" \
             --role="roles/run.invoker" \
             --project=${{ secrets.PROJECT_ID }}
+
+      - name: Get Deployment URL
+        id: get-url
+        run: |
+          URL=$(gcloud run services describe test-ingestion-service \
+            --platform=managed \
+            --region=${{ secrets.REGION }} \
+            --project=${{ secrets.PROJECT_ID }} \
+            --format='value(status.url)')
+          echo "url=$URL" >> $GITHUB_OUTPUT
+
+      - name: Integration Test /posts endpoint (ingestion)
+        run: |
+          echo "Calling /posts to trigger ingestion..."
+          STATUS=$(curl -s -o response.txt -w "%{http_code}" "${{ steps.get-url.outputs.url }}/posts")
+          cat response.txt
+          if [ "$STATUS" != "200" ]; then
+            echo "/posts failed with status $STATUS"
+            exit 1
+          else
+            echo "/posts returned 200 OK"
+          fi
+
+      - name: Wait 2 minutes for ingestion to complete
+        run: sleep 120
+
+      - name: Integration Test /posts/get endpoint
+        run: |
+          echo "Calling /posts/get..."
+          RESPONSE=$(curl -s -w "\n%{http_code}" "${{ steps.get-url.outputs.url }}/posts/get")
+          BODY=$(echo "$RESPONSE" | head -n1)
+          STATUS=$(echo "$RESPONSE" | tail -n1)
+
+          echo "Status: $STATUS"
+          echo "Body: $BODY"
+
+          if [ "$STATUS" != "200" ]; then
+            echo "/posts/get failed with status $STATUS"
+            exit 1
+          fi
+
+          if [ -z "$BODY" ] || [ "$BODY" = "[]" ]; then
+            echo "/posts/get returned empty response"
+            exit 1
+          else
+            echo "/posts/get returned non-empty data"
+          fi

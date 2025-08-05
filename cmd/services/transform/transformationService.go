@@ -1,16 +1,18 @@
-package services
+package transform
 
 import (
 	"time"
+
+	"github.com/poooloooq/test-ingestion/cmd/services/fetch"
 )
 
 type UpdatedPost struct {
-	Post
+	fetch.Post
 	IngestedAt time.Time `json:"ingested_at"`
 	Source     string    `json:"source"`
 }
 
-func ModifyPosts(posts []Post, source string) []UpdatedPost {
+func ModifyPosts(posts []fetch.Post, source string) []UpdatedPost {
 
 	var UpdatedPosts []UpdatedPost
 

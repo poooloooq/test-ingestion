@@ -9,7 +9,9 @@ import (
 
 	"github.com/poooloooq/test-ingestion/cmd/config"
 	"github.com/poooloooq/test-ingestion/cmd/repository"
-	"github.com/poooloooq/test-ingestion/cmd/services"
+	"github.com/poooloooq/test-ingestion/cmd/services/fetch"
+	"github.com/poooloooq/test-ingestion/cmd/services/storage"
+	"github.com/poooloooq/test-ingestion/cmd/services/transform"
 )
 
 func main() {
@@ -32,17 +34,17 @@ func handleIngestion(w http.ResponseWriter, r *http.Request) {
 	url := config.Config.APIURL
 	source := config.Config.Source
 
-	posts, err := services.GetAllPosts(url)
+	posts, err := fetch.GetAllPosts(url)
 	if err != nil {
 		log.Printf("Fetch Service error: %v", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
-	updated := services.ModifyPosts(posts, source)
+	updated := transform.ModifyPosts(posts, source)
 
 	ctx := context.Background()
-	if err := services.Insert(ctx, updated); err != nil {
+	if err := storage.Insert(ctx, updated); err != nil {
 		log.Printf("Storage Service error: %v", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return

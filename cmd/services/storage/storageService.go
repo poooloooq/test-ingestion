@@ -1,4 +1,4 @@
-package services
+package storage
 
 import (
 	"context"
@@ -7,9 +7,10 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/poooloooq/test-ingestion/cmd/config"
+	"github.com/poooloooq/test-ingestion/cmd/services/transform"
 )
 
-func Insert(context context.Context, posts []UpdatedPost) error {
+func Insert(context context.Context, posts []transform.UpdatedPost) error {
 
 	//Load db config from env variables
 	projectID := config.Config.GCProject
