@@ -32,6 +32,12 @@ How to Run in Cloud
 
     1. This repo has a github actions yaml file which has steps to deploy the application to cloud run.
     2. All secrets mentioned in the deployment yaml file is stored as repository secrets in github.
+
+        PROJECT_ID:         Project id of gcp project
+        REGION:             Region for deployment
+        SERVICE_ACCOUNT:    Service Account having access to all apis needed
+        KEY:                Base64 encoded creds.json content
+
     3. Start the workflow to deploy the application to cloud run and perform integration tests.
     4. The cloud env doesnt have a .env file so it loads all config from Secrets Manager.
     5. The application is already deployed in Pratik's GCP account. Test the endpoints using the following url :
@@ -68,6 +74,8 @@ Documentation-
 
         2. Slightly less difficult was to deploy application in cloud run and integrating the secrets manager to fetch configs. Lot of credential management and IAM role management was required for the cloud setup.
 
+        3. Project repo structure is a mix of Golang and Springboot standards.
+
     Trade Offs:
 
         1. Responsiveness vs Memory Efficiency
@@ -97,6 +105,8 @@ Documentation-
         6. Use kubernetes manifests preferably helm to deploy apps in a clustered environment. That will help with autoscalling and autodeploying
 
         7. Have delete functionality
+
+        8. Intoduce quality gates and vulnerability checks
 
 Bonus-
 
