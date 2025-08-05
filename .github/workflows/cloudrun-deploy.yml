@@ -32,4 +32,11 @@ jobs:
           region: ${{ secrets.REGION }}
           source: .
           project_id: ${{ secrets.PROJECT_ID }}
-          allow_unauthenticated: true
+      
+      - name: Allow unauthenticated access
+        run: |
+          gcloud run services add-iam-policy-binding test-ingestion-service \
+            --region=${{ secrets.REGION }} \
+            --member="allUsers" \
+            --role="roles/run.invoker" \
+            --project=${{ secrets.PROJECT_ID }}
