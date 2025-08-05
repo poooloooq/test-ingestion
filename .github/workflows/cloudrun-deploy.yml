@@ -66,9 +66,6 @@ jobs:
             echo "/posts returned 200 OK"
           fi
 
-      - name: Wait 2 minutes for ingestion to complete
-        run: sleep 120
-
       - name: Integration Test /posts/get endpoint
         run: |
           echo "Calling /posts/get..."
